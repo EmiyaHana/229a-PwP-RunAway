@@ -73,6 +73,12 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Playing);
     }
 
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game...");
+        Application.Quit();
+    }
+
     public void GameOver(bool isWin)
     {
         Time.timeScale = 0f;
