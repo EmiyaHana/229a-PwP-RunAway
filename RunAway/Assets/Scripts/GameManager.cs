@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         winPanel.SetActive(false);
         losePanel.SetActive(false);
 
-        if (newState == GameState.MainMenu || newState == GameState.GameOver)
+        if (newState == GameState.MainMenu || newState == GameState.GameOver || newState == GameState.Paused)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
