@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameState currentState;
 
+    public GameObject enemyPrefab;
+    public Transform spawnPoint;
+
     [Header("UI Panels")]
     public GameObject mainMenuPanel;
     public GameObject pausePanel;
@@ -71,6 +74,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        GameManager.Instance.currentState = GameState.Playing;
+
+        Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+
         Time.timeScale = 1f; 
         
         timer = 0f;

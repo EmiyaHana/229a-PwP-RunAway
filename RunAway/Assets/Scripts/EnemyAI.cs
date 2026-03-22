@@ -3,44 +3,25 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public Transform player;
     private NavMeshAgent agent;
-    private bool canHunt = false;
-
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-    }
+    private Transform player;
 
     void Start()
     {
-        if (player == null)
-        {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null) player = playerObj.transform;
-        }
+        agent = GetComponent<NavMeshAgent>();
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
-        if (canHunt && GameManager.Instance.currentState == GameState.Playing && player != null)
+        if (GameManager.Instance.currentState == GameState.Playing && player != null)
         {
             agent.SetDestination(player.position);
         }
-    }
-
-    public void StartHunting()
-    {
-        agent.enabled = true;
-        canHunt = true;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        else
         {
-            Debug.Log("Enemy caught the player!");
-            GameManager.Instance.GameOver(false); // false = â´¹¨Ñº á¾é!
+            agent.isStopped = true;
         }
     }
 }
