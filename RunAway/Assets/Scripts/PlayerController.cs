@@ -69,4 +69,11 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+    public void ResetPlayerState()
+    {
+        velocity = Vector3.zero;
+        jumpCount = 0;
+        isDashing = false;
+    }
 }

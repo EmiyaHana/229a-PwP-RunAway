@@ -71,11 +71,30 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        Time.timeScale = 1f; 
+        
         timer = 0f;
         enemySpawned = false;
-        player.transform.position = playerSpawnPoint.position;
 
-        enemyAI.gameObject.SetActive(false);
+        if (player != null)
+        {
+            PlayerController pController = player.GetComponent<PlayerController>();
+            if (pController != null) pController.ResetPlayerState();
+
+            CharacterController cc = player.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
+            player.transform.position = playerSpawnPoint.position;
+            player.transform.rotation = playerSpawnPoint.rotation;
+
+            if (cc != null) cc.enabled = true;
+        }
+
+        if (enemyAI != null)
+        {
+            enemyAI.gameObject.SetActive(false);
+            enemyAI.transform.position = playerSpawnPoint.position;
+        }
 
         ChangeState(GameState.Playing);
     }
@@ -112,6 +131,22 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.GameOver);
             losePanel.SetActive(true);
         }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        if (enemyAI != null)
+        {
+            enemyAI.gameObject.SetActive(false);
+            enemySpawned = false;
+        }
+
+        ChangeState(GameState.MainMenu);
+    }
+
+    public void RestartGame()
+    {
+        StartGame(); 
     }
 
     private void ChangeState(GameState newState)
