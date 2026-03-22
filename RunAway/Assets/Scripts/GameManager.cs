@@ -34,21 +34,37 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Playing)
+            {
+                PauseGame();
+            }
+            else if (currentState == GameState.Paused)
+            {
+                ResumeGame();
+            }
+        }
+
         if (currentState == GameState.Playing)
         {
             timer += Time.deltaTime;
-            timerText.text = "Time: " + timer.ToString("F2");
+
+            if (timerText != null) 
+            {
+                timerText.text = "Time: " + timer.ToString("F2");
+            }
 
             if (timer >= 10f && !enemySpawned)
             {
-                enemyAI.StartHunting();
+                if (enemyAI != null && playerSpawnPoint != null)
+                {
+                    enemyAI.transform.position = playerSpawnPoint.position; 
+                    enemyAI.gameObject.SetActive(true); 
+                    enemyAI.StartHunting(); 
+                }
                 enemySpawned = true;
-                Debug.Log("Enemy Spawned!");
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                PauseGame();
+                Debug.Log("Enemy Spawned and Hunting!");
             }
         }
     }
@@ -58,6 +74,9 @@ public class GameManager : MonoBehaviour
         timer = 0f;
         enemySpawned = false;
         player.transform.position = playerSpawnPoint.position;
+
+        enemyAI.gameObject.SetActive(false);
+
         ChangeState(GameState.Playing);
     }
 

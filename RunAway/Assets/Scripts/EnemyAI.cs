@@ -7,15 +7,23 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     private bool canHunt = false;
 
-    void Start()
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.enabled = false;
+    }
+
+    void Start()
+    {
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) player = playerObj.transform;
+        }
     }
 
     void Update()
     {
-        if (canHunt && GameManager.Instance.currentState == GameState.Playing)
+        if (canHunt && GameManager.Instance.currentState == GameState.Playing && player != null)
         {
             agent.SetDestination(player.position);
         }
@@ -27,11 +35,12 @@ public class EnemyAI : MonoBehaviour
         canHunt = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            GameManager.Instance.GameOver(false);
+            Debug.Log("Enemy caught the player!");
+            GameManager.Instance.GameOver(false); // false = â´¹¨Ñº á¾é!
         }
     }
 }
