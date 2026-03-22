@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float baseSpeed = 6f;
-    public float sprintMultiplier = 1.5f;
+    public float sprintMultiplier = 2f;
     public float jumpHeight = 2.0f;
     public float gravity = -9.81f;
     public float dashSpeed = 20f;
