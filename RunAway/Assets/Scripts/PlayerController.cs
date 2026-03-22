@@ -76,4 +76,9 @@ public class PlayerController : MonoBehaviour
         jumpCount = 0;
         isDashing = false;
     }
+
+    public void ApplyUpdraft(float windForce)
+    {
+        velocity.y = windForce; 
+    }
 }
