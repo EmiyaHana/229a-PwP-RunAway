@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
             timer += Time.deltaTime;
             if (timerText != null) 
             {
-                timerText.text = "Time: " + timer.ToString("F2");
+                timerText.text = "Timer : " + timer.ToString("F2");
             }
         }
     }
