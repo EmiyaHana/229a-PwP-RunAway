@@ -13,9 +13,12 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 30f;
     public float dashDuration = 0.15f;
 
+    [Header("Updraft Physics")]
+    public float airResistance = 2.5f; //Air Resistance (Drag Coefficient - k)
+
     [Header("Wall Run Settings")]
     public LayerMask wallMask;
-    public float wallRunGravity = -1.5f;
+    public float wallRunGravity = -1.5f; //Friction
     public float wallJumpForce = 12f;
     public float wallJumpSideForce = 10f;
     public float wallDetectionRange = 0.8f;
@@ -59,7 +62,7 @@ public class PlayerController : MonoBehaviour
             currentSpeed *= sprintMultiplier;
         }
         
-        if (Input.GetKeyDown(KeyCode.E) && !isDashing)
+        if (Input.GetKeyDown(KeyCode.E) && !isDashing) //Newton's rule no.1 (Law of Inertia) -> Dashing is using high velocity for a while
         {
             isDashing = true;
             dashTime = Time.time + dashDuration;
@@ -79,7 +82,8 @@ public class PlayerController : MonoBehaviour
         {
             if (isWallRunning)
             {
-                Vector3 wallNormal = wallRight ? -transform.right : transform.right;
+                Vector3 wallNormal = wallRight ? -transform.right : transform.right; //Newton's rule no.3 (Action-Reaction) -> 
+                                                                                     //used force to push away from wall in opposite direction
                 velocity = (Vector3.up * wallJumpForce) + (wallNormal * wallJumpSideForce);
                 jumpCount = 1;
                 isWallRunning = false;
@@ -91,14 +95,15 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        float currentGravity = isWallRunning ? wallRunGravity : gravity;
+        float currentGravity = isWallRunning ? wallRunGravity : gravity; //Newton's 'rule no.2 (F=ma) -> Gravity's acceleration
         velocity.y += currentGravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
     void CheckWallRun()
     {
-        wallRight = Physics.Raycast(transform.position, transform.right, wallDetectionRange, wallMask);
+        wallRight = Physics.Raycast(transform.position, transform.right, wallDetectionRange, wallMask); //Unity Physics 3D (Raycast) -> Check wall
+                                                                                                        //To use Collision Detection that it is Wall-Layer
         bool wallLeft = Physics.Raycast(transform.position, -transform.right, wallDetectionRange, wallMask);
 
         if ((wallLeft || wallRight) && !controller.isGrounded && Input.GetAxis("Vertical") > 0)
@@ -120,9 +125,11 @@ public class PlayerController : MonoBehaviour
         isWallRunning = false;
     }
 
-    public void ApplyUpdraft(float force)
+    public void ApplyUpdraft(float windForce)
     {
-        velocity.y = force;
+        float dragForce = airResistance * velocity.y; //Simulate air resistance (Drag = k * v)
+
+        velocity.y += (windForce - dragForce) * Time.fixedDeltaTime; //Newton's 'rule no.2 (F=ma) -> Use force to push player up
         jumpCount = 1;
     }
 }
