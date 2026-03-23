@@ -23,6 +23,11 @@ public class PlayerController : MonoBehaviour
     public float wallJumpSideForce = 10f;
     public float wallDetectionRange = 0.8f;
 
+    [Header("Climbing Settings")]
+    public float climbSpeed = 5f;
+    private bool isClimbing = false;
+    private bool canClimb = false;
+
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
@@ -78,6 +83,21 @@ public class PlayerController : MonoBehaviour
             controller.Move(move * currentSpeed * Time.deltaTime);
         }
 
+        if (canClimb && Input.GetAxis("Vertical") > 0)
+        {
+            isClimbing = true;
+        }
+
+        if (isClimbing)
+        {
+            float verticalInput = Input.GetAxis("Vertical"); //Friction
+        
+            velocity.y = verticalInput * climbSpeed; 
+        
+            controller.Move(velocity * Time.deltaTime);
+            return;
+        }
+
         if (Input.GetButtonDown("Jump"))
         {
             if (isWallRunning)
@@ -131,5 +151,19 @@ public class PlayerController : MonoBehaviour
 
         velocity.y += (windForce - dragForce) * Time.fixedDeltaTime; //Newton's 'rule no.2 (F=ma) -> Use force to push player up
         jumpCount = 1;
+    }
+
+    private void OnTriggerEnter(Collider other) //Unity Physics 3D (Trigger)
+    {
+        if (other.CompareTag("Climbable")) canClimb = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Climbable"))
+        {
+            canClimb = false;
+            isClimbing = false;
+        }
     }
 }

@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 3
   tags:
   - Wall
+  - Climbable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
+  - Wall
+  - Climbable
   - 
   - 
   - 
