@@ -24,4 +24,21 @@ public class EnemyAI : MonoBehaviour
             agent.isStopped = true;
         }
     }
+
+    public void StartHunting()
+    {
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
+        
+        Invoke("DelayedHunt", 0.1f);
+    }
+
+    void DelayedHunt()
+    {
+        if (agent != null && agent.isOnNavMesh) 
+        {
+            agent.isStopped = false;
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) player = playerObj.transform;
+        }
+    }
 }
