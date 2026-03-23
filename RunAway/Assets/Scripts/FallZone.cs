@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FallZone : MonoBehaviour
 {
@@ -6,7 +7,8 @@ public class FallZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.RestartGame();
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("GameScene");
         }
     }
 }

@@ -6,12 +6,6 @@ public class MouseLook : MonoBehaviour
     public Transform playerBody;
     float xRotation = 0f;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
     void Update()
     {
         if (GameManager.Instance.currentState == GameState.Playing)
