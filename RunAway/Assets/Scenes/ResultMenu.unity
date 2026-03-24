@@ -935,11 +935,12 @@ MonoBehaviour:
 
     1670701240-Ratchataphon_Chotchawalkul
 
-    19-Game_Engineer
+    19-Game_Engineer,
+    Test_Design
 
     1670703071-Phakkanun_Nirundorn
 
-    -Game_Tester'
+    22-Game_Design, Game_Tester'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
